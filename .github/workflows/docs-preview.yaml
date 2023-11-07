@@ -1,0 +1,49 @@
+name: Generate preview with PushPreview
+
+on:
+  issue_comment:
+    types:
+      - created
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  pull_request_created:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Comment
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "Want to see a live preview of your changes? Just comment `/preview` below and PushPreview will generate a unique preview URL for you. Give it a try!"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  comment:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && github.event.comment.body == '/preview'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.7
+      
+      - name: Set up env
+        run: make -C docs setupenv
+      
+      - name: Build docs
+        run: make -C docs
+      
+      - name: Generate preview
+        uses: ./.github/actions/create-push-preview
+        with:
+          source-directory: ./docs/build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pushpreview-token: ${{ secrets.PUSHPREVIEW_TOKEN }}

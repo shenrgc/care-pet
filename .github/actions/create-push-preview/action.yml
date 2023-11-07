@@ -1,0 +1,18 @@
+name: "create-push-preview-action"
+description: "Create a preview inside the PushPreview platform"
+inputs:
+  source-directory:
+    description: 'The directory to compress and send.'
+    required: true
+  github-token:
+    description: 'The secret token of GitHub.'
+    required: true
+  pushpreview-token:
+    description: 'The secret token for the PushPreview API.'
+    required: true
+outputs:
+  comment:
+    description: "PushPreview comment with links for every change edited and the URL of the preview"
+runs:
+  using: 'node20'
+  main: "index.js"

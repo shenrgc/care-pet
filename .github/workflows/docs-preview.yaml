@@ -44,6 +44,6 @@ jobs:
       - name: Generate preview
         uses: ./.github/actions/create-push-preview
         with:
-          source-directory: ./docs/build
+          source-directory: ./docs/_build/dirhtml
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pushpreview-token: ${{ secrets.PUSHPREVIEW_TOKEN }}

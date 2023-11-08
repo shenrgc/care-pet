@@ -8,6 +8,8 @@ to use Scylla as the backend datastore. It'll walk you through all the stages
 of the development process, from gathering requirements to building and running
 the application.
 
+#### This Example
+
 As an example, you will use an application called CarePet. CarePet allows pet
 owners to track their pets' health by monitoring their key health parameters,
 such as temperature or pulse. The application consists of three parts:
